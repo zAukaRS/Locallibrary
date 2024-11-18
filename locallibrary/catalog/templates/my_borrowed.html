@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/my_borrowed.css' %}">
+<div class="borrowed-container">
+    <h2>Мои взятые книги</h2>
+    
+    {% if borrowed_books %}
+    <ul class="borrowed-books-list">
+        {% for book in borrowed_books %}
+        <li class="book-item">
+            <div class="book-info">
+                <h3>{{ book.title }}</h3>
+                <p><strong>Автор:</strong> {{ book.author.name }}</p>
+                <p><strong>Дата взятия:</strong> {{ book.borrowed_date|date:"d M Y" }}</p>
+            </div>
+        </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p>У вас нет взятых книг.</p>
+    {% endif %}
+</div>
+{% endblock %}

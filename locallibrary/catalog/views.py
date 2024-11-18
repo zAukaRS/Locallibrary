@@ -1,8 +1,12 @@
 from django.shortcuts import render
-from django.views import generic
+from django.views import generic, View
 from .models import Book, Author
 from django.db.models import Q
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 
+
+@login_required
 def index(request):
     search_word = request.GET.get('q', '')
 
@@ -37,7 +41,7 @@ def index(request):
     return render(request, 'index.html', context=context)
 
 
-class BookListView(generic.ListView):
+class BookListView(LoginRequiredMixin, generic.ListView):
     model = Book
     context_object_name = 'book_list'
     template_name = 'book_list.html'
@@ -47,13 +51,13 @@ class BookListView(generic.ListView):
         return Book.objects.all()
 
 
-class BookDetailView(generic.DetailView):
+class BookDetailView(LoginRequiredMixin, generic.DetailView):
     model = Book
     context_object_name = 'book'
     template_name = 'book_detail.html'
 
 
-class AuthorListView(generic.ListView):
+class AuthorListView(LoginRequiredMixin, generic.ListView):
     model = Author
     context_object_name = 'authors'
     template_name = 'authors.html'
@@ -62,7 +66,14 @@ class AuthorListView(generic.ListView):
         return Author.objects.all()
 
 
-class AuthorDetailView(generic.DetailView):
+class AuthorDetailView(LoginRequiredMixin, generic.DetailView):
     model = Author
     context_object_name = 'author'
     template_name = 'author_detail.html'
+
+
+class MyBorrowedView(View):
+    def get(self, request):
+        return render(request, 'my_borrowed.html')
+
+

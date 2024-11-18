@@ -53,3 +53,17 @@ footer {
     left: 0;
     margin: 0;
 }
+
+#logout-form {
+    display: inline;
+}
+#logout-form button {
+    padding: 0;
+    margin: 0;
+    background: none;
+    border: none;
+    color: blue;
+    cursor: pointer;
+    text-decoration: underline;
+}
+

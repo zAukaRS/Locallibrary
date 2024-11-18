@@ -19,6 +19,22 @@
         <a href="{% url 'authors' %}" class="btn">Все авторы</a>
     </div>
 
+    <div class="sidebar-nav">
+        {% if user.is_authenticated %}
+            <p>Пользователь: {{ user.get_username }}</p>
+            <ul>
+                <li><a href="{% url 'my_borrowed' %}">Мои взятые книги</a></li>
+                <li>
+                    <form id="logout-form" method="post" action="{% url 'logout' %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-link">Выйти</button>
+                    </form>
+                </li>
+            </ul>
+
+        {% endif %}
+    </div>
+
     {% block content %}
     {% endblock %}
 

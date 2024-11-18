@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+  <link rel="stylesheet" href="{% static 'css/login.css' %}">
+
+  <div class="header">
+    <h1>Добро пожаловать в нашу библиотеку</h1>
+  </div>
+
+  <form method="post" action="{% url 'login' %}">
+    <h2>Вход в систему</h2>
+    {% csrf_token %}
+
+    {% if form.errors %}
+      <p class="error">Ваши имя пользователя и пароль не совпали. Пожалуйста, попробуйте снова.</p>
+    {% endif %}
+
+    {% if next %}
+      {% if user.is_authenticated %}
+        <p>У вашей учетной записи нет доступа к этой странице. Чтобы продолжить, войдите с учетной записью, у которой есть доступ.</p>
+      {% else %}
+        <p>Пожалуйста, войдите в систему, чтобы увидеть эту страницу.</p>
+      {% endif %}
+    {% endif %}
+
+    <table>
+      <tr>
+        <td>{{ form.username.label_tag }}</td>
+        <td>{{ form.username }}</td>
+      </tr>
+      <tr>
+        <td>{{ form.password.label_tag }}</td>
+        <td>{{ form.password }}</td>
+      </tr>
+    </table>
+
+    <input type="submit" value="Войти">
+    <input type="hidden" name="next" value="{{ next }}">
+
+    <div class="form-footer">
+      <p><a href="{% url 'password_reset' %}">Потеряли пароль?</a></p>
+    </div>
+  </form>
+{% endblock %}

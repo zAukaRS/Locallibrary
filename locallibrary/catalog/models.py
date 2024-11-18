@@ -1,5 +1,4 @@
 import uuid
-
 from django.db import models
 from django.urls import reverse
 
@@ -19,6 +18,7 @@ class Author(models.Model):
     @property
     def name(self):
         return f'{self.first_name} {self.last_name}'
+
 
 class Genre(models.Model):
     name = models.CharField(max_length=100, help_text="Введите жанр книги (например, Научная фантастика, Нон-фикшн)")
@@ -47,7 +47,7 @@ class Book(models.Model):
         return self.title
 
     def get_absolute_url(self):
-        return reverse('book-detail', args=[str(self.id)])
+        return reverse('book_detail', args=[str(self.id)])
 
 
 class BookInstance(models.Model):
@@ -75,4 +75,3 @@ class BookInstance(models.Model):
 
     def __str__(self):
         return f'{self.id} ({self.book.title})'
-
