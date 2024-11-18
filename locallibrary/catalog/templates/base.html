@@ -1,0 +1,29 @@
+{% load static %}
+<!DOCTYPE html>
+
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Local Library</title>
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+</head>
+<body>
+    <header>
+        <h1>Local Library</h1>
+    </header>
+
+    <div class="navigation-buttons">
+        <a href="{% url 'index' %}" class="btn">Домашняя страница</a>
+        <a href="{% url 'books' %}" class="btn">Все книги</a>
+        <a href="{% url 'authors' %}" class="btn">Все авторы</a>
+    </div>
+
+    {% block content %}
+    {% endblock %}
+
+    <footer>
+        <p>© 2024 Local Library</p>
+    </footer>
+</body>
+</html>

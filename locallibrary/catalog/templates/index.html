@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+
+    <header>
+        <h1>Добро пожаловать в Local Library</h1>
+    </header>
+
+
+    <div class="container">
+        <h2>Динамический контент</h2>
+        <p>В библиотеке имеется следующее количество записей:</p>
+        <ul>
+            <li><strong>Книги:</strong> {{ num_books }}</li>
+            <li><strong>Копии:</strong> {{ num_instances }}</li>
+            <li><strong>Доступны копии:</strong> {{ num_instances_available }}</li>
+            <li><strong>Авторы:</strong> {{ num_authors }}</li>
+        </ul>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Local Library</p>
+    </footer>
+{% endblock %}
