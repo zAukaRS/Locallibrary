@@ -2,14 +2,16 @@ import uuid
 
 from django.db import models
 from django.urls import reverse
-from datetime import date
 
 
 class Author(models.Model):
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
     date_of_birth = models.DateField(null=True, blank=True)
-    date_of_death = models.DateField('Умер', null=True, blank=True)
+    date_of_death = models.DateField('Died', null=True, blank=True)
+
+    def get_absolute_url(self):
+        return reverse('author_detail', args=[str(self.id)])
 
     def __str__(self):
         return f'{self.last_name}, {self.first_name}'
@@ -41,10 +43,6 @@ class Book(models.Model):
     genre = models.ManyToManyField('Genre', help_text="Выберите жанр для этой книги")
     language = models.ForeignKey('Language', on_delete=models.SET_NULL, null=True)
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.id = None
-
     def __str__(self):
         return self.title
 
@@ -53,8 +51,9 @@ class Book(models.Model):
 
 
 class BookInstance(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, help_text="Уникальный идентификатор для этой конкретной книги во всей библиотеке")
-    book = models.ForeignKey('Book', on_delete=models.RESTRICT, null=True)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False,
+                          help_text="Уникальный идентификатор для этой конкретной книги во всей библиотеке")
+    book = models.ForeignKey('Book', on_delete=models.CASCADE, null=True)
     imprint = models.CharField(max_length=200)
     due_back = models.DateField(null=True, blank=True)
     borrower = models.ForeignKey('auth.User', on_delete=models.SET_NULL, null=True, blank=True)
@@ -76,3 +75,4 @@ class BookInstance(models.Model):
 
     def __str__(self):
         return f'{self.id} ({self.book.title})'
+

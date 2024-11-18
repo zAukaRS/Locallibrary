@@ -1,10 +1,18 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+  <link rel="stylesheet" href="{% static 'css/author_detail.css' %}">
+  <h1>{{ author.first_name }} {{ author.last_name }}</h1>
+
+  <p><strong>Дата рождения:</strong> {{ author.date_of_birth }}</p>
+  <p><strong>Дата смерти:</strong> {% if author.date_of_death %}{{ author.date_of_death }}{% else %}Все еще жив{% endif %}</p>
+
+  <h3>Книги автора {{ author.first_name }} {{ author.last_name }}</h3>
+  <ul>
+    {% for book in author.book_set.all %}
+      <li><a href="{% url 'book_detail' book.pk %}">{{ book.title }}</a></li>
+    {% empty %}
+      <p>Книги этого автора не найдены.</p>
+    {% endfor %}
+  </ul>
+{% endblock %}

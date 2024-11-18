@@ -3,9 +3,9 @@ from .models import Book, Author, Genre, Language, BookInstance
 
 @admin.register(Author)
 class AuthorAdmin(admin.ModelAdmin):
-    list_display = ('name', 'date_of_birth', 'date_of_death')  # Используем свойство name
-    search_fields = ('first_name', 'last_name')  # Поиск по имени и фамилии
-    list_display_links = ('name',)  # Ссылки для редактирования
+    list_display = ('name', 'date_of_birth', 'date_of_death')
+    search_fields = ('first_name', 'last_name')
+    list_display_links = ('name',)
 
     def name(self, obj):
         return f'{obj.first_name} {obj.last_name}'
@@ -13,10 +13,10 @@ class AuthorAdmin(admin.ModelAdmin):
 
 @admin.register(Book)
 class BookAdmin(admin.ModelAdmin):
-    list_display = ('title', 'author', 'language', 'isbn')  # Название, автор, язык, ISBN
-    list_filter = ('author', 'genre', 'language')  # Фильтры
-    search_fields = ('title', 'author__first_name', 'author__last_name')  # Поиск по названию и автору
-    list_display_links = ('title',)  # Ссылки для редактирования
+    list_display = ('title', 'author', 'language', 'isbn')
+    list_filter = ('author', 'genre', 'language')
+    search_fields = ('title', 'author__first_name', 'author__last_name')
+    list_display_links = ('title',)
     fieldsets = (
         ('Основная информация', {
             'fields': ('title', 'author', 'description', 'genre', 'language')
@@ -28,9 +28,9 @@ class BookAdmin(admin.ModelAdmin):
 
 @admin.register(BookInstance)
 class BookInstanceAdmin(admin.ModelAdmin):
-    list_display = ('book', 'status', 'due_back', 'borrower')  # Книга, статус, возврат, заемщик
-    list_filter = ('status', 'due_back')  # Фильтры
-    search_fields = ('book__title', 'borrower__username')  # Поиск по книге и заемщику
+    list_display = ('book', 'status', 'due_back', 'borrower')
+    list_filter = ('status', 'due_back')
+    search_fields = ('book__title', 'borrower__username')
     fieldsets = (
         ('Информация о книге', {
             'fields': ('book', 'imprint', 'id')
@@ -42,10 +42,10 @@ class BookInstanceAdmin(admin.ModelAdmin):
 
 @admin.register(Genre)
 class GenreAdmin(admin.ModelAdmin):
-    list_display = ('name',)  # Название жанра
-    search_fields = ('name',)  # Поиск по названию
+    list_display = ('name',)
+    search_fields = ('name',)
 
 @admin.register(Language)
 class LanguageAdmin(admin.ModelAdmin):
-    list_display = ('name',)  # Язык
-    search_fields = ('name',)  # Поиск по языку
+    list_display = ('name',)
+    search_fields = ('name',)

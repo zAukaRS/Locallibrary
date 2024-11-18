@@ -1,10 +1,26 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Авторы{% endblock %}
+
+
+{% block content %}
+    <link rel="stylesheet" href="{% static 'css/authors.css' %}">
+    <h1>Авторы</h1>
+    <p>На этой странице представлены все авторы, чьи книги доступны в нашей библиотеке.</p>
+
+    {% if authors %}
+        <ul class="author-list">
+            {% for author in authors %}
+                <li class="author-item">
+                    <h2>{{ author.name }}</h2>
+                    <p>Дата рождения: {{ author.date_of_birth }}</p>
+                    <p>Дата смерти: {{ author.date_of_death }}</p>
+                    <p>Описание: {{ author.bio|default:"Нет информации о биографии" }}</p>
+                    <a href="{% url 'author_detail' author.pk %}">Подробнее о авторе</a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Нет доступных авторов</p>
+    {% endif %}
+{% endblock %}
