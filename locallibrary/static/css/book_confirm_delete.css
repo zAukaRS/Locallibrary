@@ -1,0 +1,68 @@
+.delete-page-container {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 30px;
+    background-color: #f8f9fa;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    font-family: 'Arial', sans-serif;
+}
+
+.delete-page-container h1 {
+    font-size: 2rem;
+    color: #c0392b;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+}
+
+.delete-page-container p {
+    font-size: 1rem;
+    color: #333;
+    margin-bottom: 20px;
+    line-height: 1.5;
+}
+
+.delete-page-container .btn {
+    display: inline-block;
+    padding: 12px 25px;
+    font-size: 1rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.delete-page-container .delete-btn {
+    background-color: #e74c3c;
+    color: white;
+}
+
+.delete-page-container .delete-btn:hover {
+    background-color: #c0392b;
+    transform: translateY(-2px);
+}
+
+.delete-page-container .delete-btn:active {
+    background-color: #a93226;
+    transform: translateY(1px);
+}
+
+.delete-page-container .cancel-btn {
+    background-color: #7f8c8d;
+    color: white;
+    margin-left: 10px;
+}
+
+.delete-page-container .cancel-btn:hover {
+    background-color: #616a6b;
+    transform: translateY(-2px);
+}
+
+.delete-page-container .cancel-btn:active {
+    background-color: #4d5656;
+    transform: translateY(1px);
+}

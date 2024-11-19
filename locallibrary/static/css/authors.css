@@ -1,3 +1,24 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #fafafa;
+    color: #333;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.container {
+    flex: 1;
+    width: 80%;
+    margin: 20px auto;
+    background-color: white;
+    padding: 20px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    overflow-y: auto;
+}
+
 .author-list {
     list-style-type: none;
     padding: 0;
@@ -29,14 +50,6 @@
 
 .author-item a:hover {
     color: #fff;
-}
-
-body {
-    font-family: 'Arial', sans-serif;
-    background-color: #fafafa;
-    color: #333;
-    margin: 0;
-    padding: 0;
 }
 
 header {
@@ -77,14 +90,6 @@ header h1 {
     background-color: #3e8e41;
 }
 
-.container {
-    width: 80%;
-    margin: 20px auto;
-    background-color: white;
-    padding: 20px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-}
-
 ul {
     list-style: none;
     padding-left: 0;
@@ -104,8 +109,7 @@ footer {
     color: white;
     padding: 10px;
     text-align: center;
-    position: fixed;
-    bottom: 0;
+    position: relative;
     width: 100%;
 }
 
@@ -117,4 +121,33 @@ a {
 a:hover {
     text-decoration: underline;
 }
+
+.centered-container {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.btn2 {
+    display: inline-block;
+    background-color: #4CAF50;
+    color: white;
+    padding: 15px 30px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    border-radius: 5px;
+    margin: 5px;
+    transition: background-color 0.3s;
+}
+
+.btn2:hover {
+    background-color: #45a049;
+    text-decoration: none;
+}
+
+.btn2:active {
+    background-color: #3e8e41;
+    text-decoration: none;
+}
+
 

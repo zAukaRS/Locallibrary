@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+
 {% block content %}
   <link rel="stylesheet" href="{% static 'css/author_detail.css' %}">
   <h1>{{ author.first_name }} {{ author.last_name }}</h1>
@@ -15,4 +16,21 @@
       <p>Книги этого автора не найдены.</p>
     {% endfor %}
   </ul>
+  {{ block.super }}
+
+  {% if perms.catalog.change_author or perms.catalog.delete_author %}
+  <hr>
+  <ul class="sidebar-nav">
+    {% if perms.catalog.change_author %}
+      <li><a href="{% url 'author-update' author.id %}">Обновить автора</a></li>
+    {% endif %}
+    {% if not author.book_set.all and perms.catalog.delete_author %}
+      <li><a href="{% url 'author-delete' author.id %}">Удалить автора</a></li>
+    {% endif %}
+  </ul>
+  {% endif %}
 {% endblock %}
+
+
+
+

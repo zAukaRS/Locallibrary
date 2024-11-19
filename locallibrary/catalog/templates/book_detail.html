@@ -2,15 +2,25 @@
 {% load static %}
 {% block content %}
   <link rel="stylesheet" href="{% static 'css/book_detail.css' %}">
-  <h1> {{ book.title }}</h1>
+  {% if perms.catalog.delete_book %}
+    <div class="delete-book-button text-center">
+      {% if perms.catalog.delete_book %}
+      <div class="delete-book-button text-center">
+        <a href="{% url 'book_delete' book.id %}" class="btn btn-danger">Удалить книгу</a>
+      </div>
+      {% endif %}
+
+    </div>
+  {% endif %}
+  <h1>{{ book.title }}</h1>
 
   <p><strong>Автор:</strong> <a href="{{ book.author.get_absolute_url }}">{{ book.author }}</a></p>
-  <p><strong>Краткое содержание:</strong> {{ book.summary }}</p>
+  <p><strong>Краткое содержание:</strong> {{ book.description }}</p>
   <p><strong>ISBN:</strong> {{ book.isbn }}</p>
   <p><strong>Язык:</strong> {{ book.language }}</p>
   <p><strong>Жанр:</strong> {{ book.genre.all|join:", " }}</p>
 
-  <div style="margin-left:20px;margin-top:20px">
+  <div>
     <h4>Копии</h4>
 
     {% for copy in book.bookinstance_set.all %}
@@ -23,6 +33,16 @@
       {% endif %}
       <p><strong>Отпечаток:</strong> {{ copy.imprint }}</p>
       <p class="text-muted"><strong>Id:</strong> {{ copy.id }}</p>
+
+      {% if copy.status == 'a' %}
+        <form action="{% url 'borrow_book' copy.id %}" method="post">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-primary">Взять книгу</button>
+        </form>
+      {% endif %}
     {% endfor %}
   </div>
+
+
+
 {% endblock %}

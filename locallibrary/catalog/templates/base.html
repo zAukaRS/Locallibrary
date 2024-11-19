@@ -7,36 +7,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Local Library</title>
     <link rel="stylesheet" type="text/css" href="{% static 'css/base.css' %}">
+    <link rel="stylesheet" href="{% static 'css/author_form.css' %}">
+    <link rel="stylesheet" href="{% static 'css/author_update.css' %}">
 </head>
 <body>
     <header>
-        <h1>Local Library</h1>
+        <h1>Добро пожаловать в Local Library</h1>
+        {% if user.is_authenticated %}
+        <div class="user-info">
+            <p>Добро пожаловать, <strong>{{ user.get_username }}</strong>!</p>
+            <form id="logout-form" method="post" action="{% url 'logout' %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-link">Выйти</button>
+            </form>
+        </div>
+        {% endif %}
     </header>
 
     <div class="navigation-buttons">
         <a href="{% url 'index' %}" class="btn">Домашняя страница</a>
         <a href="{% url 'book_list' %}" class="btn">Все книги</a>
         <a href="{% url 'authors' %}" class="btn">Все авторы</a>
-    </div>
-
-    <div class="sidebar-nav">
         {% if user.is_authenticated %}
-            <p>Пользователь: {{ user.get_username }}</p>
-            <ul>
-                <li><a href="{% url 'my_borrowed' %}">Мои взятые книги</a></li>
-                <li>
-                    <form id="logout-form" method="post" action="{% url 'logout' %}">
-                        {% csrf_token %}
-                        <button type="submit" class="btn btn-link">Выйти</button>
-                    </form>
-                </li>
-            </ul>
-
+            <a href="{% url 'my_borrowed' %}" class="btn">Мои книги</a>
+        {% endif %}
+        {% if perms.catalog.can_mark_returned %}
+            <a href="{% url 'all_borrowed_books' %}" class="btn">Управление книгами</a>
         {% endif %}
     </div>
 
-    {% block content %}
-    {% endblock %}
+    <div class="main-content">
+        {% block content %}
+        {% endblock %}
+    </div>
 
     <footer>
         <p>© 2024 Local Library</p>

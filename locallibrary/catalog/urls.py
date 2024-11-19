@@ -2,6 +2,8 @@ from django.urls import path
 from . import views
 from django.contrib.auth import views as auth_views
 
+from .views import BorrowBookView, BookCreateView, BookUpdateView, BookDeleteView
+
 urlpatterns = [
     path('', views.index, name='index'),
     path('books/', views.BookListView.as_view(), name='book_list'),
@@ -17,4 +19,13 @@ urlpatterns = [
     path('accounts/reset/done/', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
     path('accounts/logout/', auth_views.LogoutView.as_view(), name='logout'),
     path('my_borrowed/', views.MyBorrowedView.as_view(), name='my_borrowed'),
+    path('all_borrowed_books/', views.BorrowedBooksByLibrarianView.as_view(), name='all_borrowed_books'),
+    path('book/<uuid:pk>/borrow/', BorrowBookView.as_view(), name='borrow_book'),
+    path('book/<uuid:pk>/renew/', views.renew_book_librarian, name='renew_book_librarian'),
+    path('author/create/', views.AuthorCreate.as_view(), name='author-create'),
+    path('author/<int:pk>/update/', views.AuthorUpdate.as_view(), name='author-update'),
+    path('author/<int:pk>/delete/', views.AuthorDelete.as_view(), name='author-delete'),
+    path('books/create/', BookCreateView.as_view(), name='book_create'),
+    path('books/<int:pk>/update/', BookUpdateView.as_view(), name='book_update'),
+    path('books/<int:pk>/delete/', BookDeleteView.as_view(), name='book_delete'),
 ]

@@ -1,58 +1,77 @@
-.table-container {
-  margin: 20px auto;
-  max-width: 90%;
-  overflow-x: auto;
-  border-radius: 8px;
-  border: 1px solid #ddd;
+body {
+  font-family: Arial, sans-serif;
   background-color: #f9f9f9;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.borrowed-books-table {
+.form-container {
+  width: 50%;
+  margin: 50px auto;
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.form-container h2 {
+  margin-bottom: 20px;
+  font-size: 24px;
+  color: #333;
+  text-align: center;
+}
+
+.styled-form table {
   width: 100%;
   border-collapse: collapse;
-  margin: 0;
+  margin-bottom: 20px;
+}
+
+.styled-form th,
+.styled-form td {
+  padding: 10px;
+  text-align: left;
+}
+
+.form-errors {
+  background-color: #ffe5e5;
+  border: 1px solid #ff6b6b;
+  color: #a10000;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 15px;
+}
+
+.form-buttons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.btn-submit {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
   font-size: 16px;
 }
 
-.borrowed-books-table thead {
-  background-color: #4CAF50;
-  color: white;
+.btn-submit:hover {
+  background-color: #0056b3;
 }
 
-.borrowed-books-table th,
-.borrowed-books-table td {
-  padding: 12px 15px;
-  text-align: left;
-  border: 1px solid #ddd;
-}
-
-.borrowed-books-table tbody tr:nth-child(even) {
-  background-color: #f2f2f2;
-}
-
-.borrowed-books-table tbody tr:hover {
-  background-color: #eaf5ea;
-}
-
-.borrowed-books-table a.btn {
+.btn-cancel {
   text-decoration: none;
-  color: white;
-  background-color: #4CAF50;
-  padding: 6px 12px;
+  color: #555;
+  font-size: 16px;
+  padding: 10px 15px;
+  border: 1px solid #ddd;
   border-radius: 5px;
-  font-weight: bold;
 }
 
-.borrowed-books-table a.btn:hover {
-  background-color: #45a049;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-.borrowed-books-table td[colspan="6"] {
-  text-align: center;
-  font-style: italic;
-  color: #888;
+.btn-cancel:hover {
+  background-color: #f0f0f0;
+  border-color: #ccc;
 }
 
 header {

@@ -1,10 +1,41 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% extends "base.html" %}
+
+{% load static %}
+
+
+{% block content %}
+  <link rel="stylesheet" type="text/css" href="{% static 'css/all_borrowed_books.css' %}">
+<h1>Список взятых книг</h1>
+<div class="table-container">
+  <table class="borrowed-books-table">
+    <thead>
+      <tr>
+        <th>Книга</th>
+        <th>Автор</th>
+        <th>Кто взял</th>
+        <th>Дата возврата</th>
+        <th>Статус</th>
+        <th>Действия</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for book in borrowed_books %}
+      <tr>
+        <td>{{ book.book.title }}</td>
+        <td>{{ book.book.author }}</td>
+        <td>{{ book.borrower }}</td>
+        <td>{{ book.due_back }}</td>
+        <td>{{ book.get_status_display }}</td>
+        <td>
+          <a href="{% url 'renew_book_librarian' book.id %}" class="btn">Обновить</a>
+        </td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="6">Нет взятых книг.</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

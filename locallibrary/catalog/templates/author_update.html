@@ -2,24 +2,24 @@
 
 {% block content %}
 <div class="form-container">
-  <h2>{{ title }}</h2>
+  <h2>Обновить автора</h2>
   <form action="" method="post" class="styled-form">
     {% csrf_token %}
     <table>
       {{ form.as_table }}
     </table>
-    {% if form.non_field_errors %}
+    {% if form.errors %}
     <div class="form-errors">
-      <p>Ошибка:</p>
+      <p>Есть некоторые проблемы с вашим вводом:</p>
       <ul>
-        {% for error in form.non_field_errors %}
-        <li>{{ error }}</li>
+        {% for field, errors in form.errors.items %}
+        <li><strong>{{ field }}:</strong> {{ errors|join:", " }}</li>
         {% endfor %}
       </ul>
     </div>
     {% endif %}
     <div class="form-buttons">
-      <input type="submit" value="Добавить" class="btn-submit" />
+      <input type="submit" value="Save Changes" class="btn-submit" />
       <a href="{% url 'authors' %}" class="btn-cancel">Отменить</a>
     </div>
   </form>

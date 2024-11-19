@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/book_form.css' %}">
+<div class="form-container">
+    <h1>Создать книгу</h1>
+    <form method="post" action="{% url 'book_create' %}">
+        {% csrf_token %}
+        <div class="form-group">
+            <label>Название:</label>
+            {{ form.title }}
+        </div>
+        <div class="form-group">
+            <label>Автор:</label>
+            {{ form.author }}
+        </div>
+        <div class="form-group">
+            <label>Описание:</label>
+            {{ form.description }}
+        </div>
+        <div class="form-group">
+            <label>ISBN:</label>
+            {{ form.isbn }}
+        </div>
+        <div class="form-group">
+            <label>Жанры:</label>
+            {{ form.genre }}
+        </div>
+        <div class="button-group">
+            <button type="submit" class="btn save-btn">Сохранить</button>
+            <a href="{% url 'book_list' %}" class="btn cancel-btn">Отмена</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

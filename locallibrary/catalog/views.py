@@ -1,9 +1,16 @@
-from django.shortcuts import render
-from django.views import generic, View
-from .models import Book, Author
+from django.http import HttpResponseRedirect
+from django.shortcuts import render, get_object_or_404, redirect
+from django.urls import reverse, reverse_lazy
+from django.utils.decorators import method_decorator
+from django.views import generic
+from django.views.generic import ListView, FormView, CreateView, UpdateView, DeleteView
+import datetime
 from django.db.models import Q
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required, permission_required
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+
+from .forms import RenewBookForm, BorrowBookForm, BookForm
+from .models import Book, Author, BookInstance
 
 
 @login_required
@@ -72,8 +79,130 @@ class AuthorDetailView(LoginRequiredMixin, generic.DetailView):
     template_name = 'author_detail.html'
 
 
-class MyBorrowedView(View):
-    def get(self, request):
-        return render(request, 'my_borrowed.html')
+class MyBorrowedView(LoginRequiredMixin, ListView):
+    model = BookInstance
+    template_name = 'my_borrowed.html'
+    context_object_name = 'borrowed_books'
+
+    def get_queryset(self):
+        return BookInstance.objects.filter(borrower=self.request.user, status='o')
 
 
+class BorrowedBooksByLibrarianView(PermissionRequiredMixin, ListView):
+    model = BookInstance
+    template_name = 'all_borrowed_books.html'
+    context_object_name = 'borrowed_books'
+    permission_required = 'catalog.can_mark_returned'
+
+    def get_queryset(self):
+        return BookInstance.objects.filter(status='o').order_by('due_back')
+
+
+class BorrowBookView(LoginRequiredMixin, FormView):
+    template_name = 'borrow_book.html'
+    form_class = BorrowBookForm
+
+    def form_valid(self, form):
+        book_instance_id = self.kwargs['pk']
+        book_instance = get_object_or_404(BookInstance, pk=book_instance_id)
+
+        if book_instance.status != 'a':
+            form.add_error(None, "Эта книга уже занята.")
+            return self.form_invalid(form)
+
+        book_instance.borrower = self.request.user
+        book_instance.due_back = form.cleaned_data['due_back']
+        book_instance.status = 'o'  # Меняем статус на "взята"
+        book_instance.save()
+
+        return redirect('index')
+
+
+@permission_required('catalog.can_mark_returned')
+def renew_book_librarian(request, pk):
+    book_instance = get_object_or_404(BookInstance, pk=pk)
+
+    if request.method == 'POST':
+        form = RenewBookForm(request.POST)
+
+        if form.is_valid():
+            book_instance.due_back = form.cleaned_data['due_back']
+            book_instance.save()
+
+            return HttpResponseRedirect(reverse('all_borrowed_books'))
+
+    else:
+        proposed_renewal_date = datetime.date.today() + datetime.timedelta(weeks=3)
+        form = RenewBookForm(initial={'renewal_date': proposed_renewal_date})
+
+    context = {
+        'form': form,
+        'book_instance': book_instance,
+    }
+
+    return render(request, 'book_renew_librarian.html', context)
+
+
+class AuthorCreate(PermissionRequiredMixin, CreateView):
+    model = Author
+    fields = ['first_name', 'last_name', 'date_of_birth', 'date_of_death']
+    initial = {'date_of_death': ''}
+    permission_required = 'catalog.add_author'
+    template_name = 'author_form.html'
+
+
+class AuthorUpdate(PermissionRequiredMixin, UpdateView):
+    model = Author
+    fields = ['first_name', 'last_name', 'date_of_birth', 'date_of_death']
+    template_name = 'author_update.html'
+    success_url = reverse_lazy('authors')
+    permission_required = 'catalog.change_author'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = "Обновить сведения об авторе"
+        return context
+
+
+class AuthorDelete(PermissionRequiredMixin, DeleteView):
+    model = Author
+    template_name = 'author_delete.html'
+    success_url = reverse_lazy('authors')
+    permission_required = 'catalog.delete_author'
+
+    def form_valid(self, form):
+        try:
+            self.object.delete()
+            return HttpResponseRedirect(self.success_url)
+        except Exception:
+            return HttpResponseRedirect(
+                reverse("author-delete", kwargs={"pk": self.object.pk})
+            )
+
+
+@method_decorator(permission_required('catalog.add_book'), name='dispatch')
+class BookCreateView(CreateView):
+    model = Book
+    form_class = BookForm
+    template_name = 'book_form.html'
+    success_url = reverse_lazy('book_list')
+
+
+@method_decorator(permission_required('catalog.change_book'), name='dispatch')
+class BookUpdateView(UpdateView):
+    model = Book
+    form_class = BookForm
+    template_name = 'book_form.html'
+    success_url = reverse_lazy('book_list')
+
+
+@method_decorator(permission_required('catalog.delete_book'), name='dispatch')
+class BookDeleteView(DeleteView):
+    model = Book
+    template_name = 'book_confirm_delete.html'
+    success_url = reverse_lazy('book_list')
+
+    def form_valid(self, form):
+        if self.object.bookinstance_set.exists():
+            return redirect('book_list')
+        return super().form_valid(form)

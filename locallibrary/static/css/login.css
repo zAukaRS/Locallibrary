@@ -12,7 +12,6 @@ body {
 .header {
     position: absolute;
     top: 0;
-    width: 100%;
     background-color: #2c3e50;
     color: white;
     text-align: center;
@@ -97,17 +96,7 @@ p.error {
 
 
 
-header {
-    background-color: #2c3e50;
-    color: white;
-    padding: 15px 0;
-    text-align: center;
-}
 
-header h1 {
-    margin: 0;
-    font-size: 3rem;
-}
 
 .navigation-buttons {
     margin: 20px 0;

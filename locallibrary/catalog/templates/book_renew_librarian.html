@@ -1,10 +1,19 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block content %}
+  <link rel="stylesheet" type="text/css" href="{% static 'css/book_renew_librarian.css' %}">
+  <h2>Продление срока выдачи: {{ book_instance.book.title }}</h2>
+
+  <p><strong>Borrower:</strong> {{ book_instance.borrower }}</p>
+  <p><strong>Дата возврата:</strong> {{ book_instance.due_back }}</p>
+
+  <form action="" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Продлить</button>
+  </form>
+  
+  <a href="{% url 'all_borrowed_books' %}">Вернуться к списку</a>
+{% endblock %}

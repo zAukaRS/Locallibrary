@@ -171,3 +171,27 @@ h4 {
 .book-copies .copy-info p strong {
   color: #333;
 }
+
+.delete-book-button {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.delete-book-button .btn-danger {
+    background-color: #e74c3c;
+    color: white;
+    padding: 15px 30px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.delete-book-button .btn-danger:hover {
+    background-color: #c0392b;
+}
+
+.delete-book-button .btn-danger:active {
+    background-color: #e74c3c;
+}

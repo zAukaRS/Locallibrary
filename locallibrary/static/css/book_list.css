@@ -110,3 +110,25 @@ a {
 a:hover {
     text-decoration: underline;
 }
+
+.add-book-button {
+    text-align: center;
+    margin: 20px 0;
+}
+
+.add-book-button .btn {
+    display: inline-block;
+    background-color: #4CAF50;
+    color: white;
+    padding: 15px 30px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    border-radius: 5px;
+    margin: 5px;
+    transition: background-color 0.3s;
+}
+
+.add-book-button .btn:hover {
+    background-color: #45a049;
+}

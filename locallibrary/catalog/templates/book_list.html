@@ -3,6 +3,11 @@
 
 {% block content %}
   <link rel="stylesheet" href="{% static 'css/book_list.css' %}">
+  {% if perms.catalog.add_book %}
+    <div class="add-book-button">
+      <a href="{% url 'book_create' %}" class="btn">Добавить книгу</a>
+    </div>
+  {% endif %}
   <h1>Список книг</h1>
 
   {% if book_list %}

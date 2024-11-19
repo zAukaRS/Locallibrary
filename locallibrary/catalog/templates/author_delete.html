@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+  <link rel="stylesheet" href="{% static 'css/author_delete.css' %}">
+<div class="delete-page-container">
+    <h1>Удаление автора</h1>
+    <p>Вы уверены, что хотите удалить автора <strong>{{ author.first_name }} {{ author.last_name }}</strong>?</p>
+    
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn delete-btn">Удалить</button>
+        <a href="{% url 'authors' %}" class="btn cancel-btn">Отмена</a>
+    </form>
+</div>
+{% endblock %}
