@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse, reverse_lazy
@@ -10,7 +11,7 @@ from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 
 from .forms import RenewBookForm, BorrowBookForm, BookForm
-from .models import Book, Author, BookInstance
+from .models import Book, Author, BookInstance, BelovedBook
 
 
 @login_required
@@ -187,6 +188,13 @@ class BookCreateView(CreateView):
     template_name = 'book_form.html'
     success_url = reverse_lazy('book_list')
 
+    def form_valid(self, form):
+        book = form.save(commit=False)
+        book.save()
+        form.save_m2m()
+        messages.success(self.request, f"Книга '{book.title}' успешно создана.")
+        return super().form_valid(form)
+
 
 @method_decorator(permission_required('catalog.change_book'), name='dispatch')
 class BookUpdateView(UpdateView):
@@ -195,6 +203,12 @@ class BookUpdateView(UpdateView):
     template_name = 'book_form.html'
     success_url = reverse_lazy('book_list')
 
+    def form_valid(self, form):
+        book = form.save(commit=False)
+        book.save()
+        form.save_m2m()
+        messages.success(self.request, f"Книга '{book.title}' успешно создана.")
+        return super().form_valid(form)
 
 @method_decorator(permission_required('catalog.delete_book'), name='dispatch')
 class BookDeleteView(DeleteView):
@@ -206,3 +220,16 @@ class BookDeleteView(DeleteView):
         if self.object.bookinstance_set.exists():
             return redirect('book_list')
         return super().form_valid(form)
+
+
+@login_required
+def add_beloved_book(request, pk):
+    book = get_object_or_404(Book, pk=pk)
+
+    if request.method == 'POST':
+        if hasattr(request.user, 'beloved_book'):
+            request.user.beloved_book.delete()
+        BelovedBook.objects.create(user=request.user, book=book)
+        messages.success(request, f"Книга '{book.title}' теперь ваша любимая.")
+        return redirect('book_detail', pk=pk)
+    return redirect('book_list')

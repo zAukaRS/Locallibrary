@@ -2,6 +2,7 @@
 {% load static %}
 {% block content %}
   <link rel="stylesheet" href="{% static 'css/book_detail.css' %}">
+  <script src="{% static 'js/book_detail.js' %}"></script>
   {% if perms.catalog.delete_book %}
     <div class="delete-book-button text-center">
       {% if perms.catalog.delete_book %}
@@ -19,6 +20,27 @@
   <p><strong>ISBN:</strong> {{ book.isbn }}</p>
   <p><strong>Язык:</strong> {{ book.language }}</p>
   <p><strong>Жанр:</strong> {{ book.genre.all|join:", " }}</p>
+
+  {% if user.is_authenticated %}
+    {% if user.beloved_book and user.beloved_book.book == book %}
+        <p class="text-success mt-2">Эта книга уже ваша любимая!</p>
+    {% else %}
+        <form method="post" action="{% url 'add_beloved_book' book.pk %}" id="beloved-form">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-primary" onclick="return confirmBelovedChange(event)">
+                Добавить в любимые
+            </button>
+        </form>
+    {% endif %}
+  {% endif %}
+
+  {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li class="alert alert-{{ message.tags }}">{{ message }}</li>
+        {% endfor %}
+    </ul>
+  {% endif %}
 
   <div>
     <h4>Копии</h4>

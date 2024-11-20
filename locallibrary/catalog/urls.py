@@ -2,7 +2,7 @@ from django.urls import path
 from . import views
 from django.contrib.auth import views as auth_views
 
-from .views import BorrowBookView, BookCreateView, BookUpdateView, BookDeleteView
+from .views import BorrowBookView, BookCreateView, BookUpdateView, BookDeleteView, add_beloved_book
 
 urlpatterns = [
     path('', views.index, name='index'),
@@ -28,4 +28,5 @@ urlpatterns = [
     path('books/create/', BookCreateView.as_view(), name='book_create'),
     path('books/<int:pk>/update/', BookUpdateView.as_view(), name='book_update'),
     path('books/<int:pk>/delete/', BookDeleteView.as_view(), name='book_delete'),
+    path('book/<int:pk>/add_beloved/', add_beloved_book, name='add_beloved_book'),
 ]

@@ -59,4 +59,11 @@ class BookForm(forms.ModelForm):
         }
         widgets = {
             'description': forms.Textarea(attrs={'rows': 4}),
+            'genre': forms.CheckboxSelectMultiple(),
         }
+
+        def clean_genre(self):
+            genres = self.cleaned_data.get('genre')
+            if genres and genres.count() > 3:
+                raise forms.ValidationError("Вы не можете выбрать больше 3 жанров.")
+            return genres

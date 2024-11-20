@@ -29,6 +29,15 @@ class BookAdmin(admin.ModelAdmin):
         }),
     )
 
+    def save_model(self, request, obj, form, change):
+        obj.save()
+        form.save_m2m()
+        super().save_model(request, obj, form, change)
+
+
+
+
+
 @admin.register(Genre)
 class GenreAdmin(admin.ModelAdmin):
     list_display = ('name',)
